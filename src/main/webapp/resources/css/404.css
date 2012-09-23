@@ -1,0 +1,58 @@
+@import "./reset.css";
+
+body { color: #000; background: #FFF; font-family: "Courier New", courier, serif; padding: 10px; font-size: 11pt; }
+
+div#main { width: 960px; margin: 0 auto; }
+div#logo { text-align: center; border: 1px solid #333; border-width: 0 0 1px 0; padding: 10px 0; }
+h1#tagline { margin: 5px auto; text-align: center; font-size: 9pt; font-weight: normal; color: #333; }
+
+h1 { font-size: 22pt; font-weight: bold; margin: 0 0 10px 0; }
+h2 { font-size: 16pt; font-weight: bold; margin: 0 0 10px 0; }
+.clear { clear: both; float: none; height: 1px; _font-size: 1px; }
+
+.ra { text-align: right; }
+.ca { text-align: center; }
+.la { text-align: left; }
+.fl { float: left; }
+.fr { float: right; }
+
+#header {
+	height: 120px;
+	border-bottom: 3px solid #c0c0c0;
+	background: #204080;
+	text-align: center;
+	color: #f0f0f0;
+	margin: 0;
+	padding: 0;
+}
+
+#header h1 {
+	padding-top: 24px;
+	font-size: 250%;
+}
+
+#header a {
+	color: #f0f0f0;
+}
+#page { border: 1px solid #333; border-width: 0 0 1px 0; }
+#menu, #pagecontent {float: left; min-height: 400px; height: auto; _height: 400px; line-height: 1.1; padding: 5px 0 0 0; } 
+#menu { width: 160px; }
+#pagecontent { width: 923px; margin: 15px 0 15px 15px; padding-left:10px; color:#00FF00; background-color:black; }
+
+#menu li { padding: 0 5px; margin: 15px 25px 0 0; height: 20px; }
+#menu li a { display: block; height: 20px; background-position: right 0px; background-repeat: no-repeat; text-align: right; color: #000; font-weight: bold; font-size: 18px; }
+#menu li a:hover { background-position: right -20px; color: #00703C; }
+#menu li.current a { color: #AAA; }
+#menu li.current a:hover { color: #AAA; }
+
+#menu li.menu1 a { background-image: url("/images/menuhome.gif"); }
+#menu li.menu2 a { background-image: url("/images/menuabout.gif"); }
+#menu li.menu3 a { background-image: url("/images/menuservices.gif"); }
+#menu li.menu4 a { background-image: url("/images/menuprojects.gif"); }
+#menu li.menu5 a { background-image: url("/images/menucontact.gif"); }
+
+#footer { text-align: right; font-size: 9pt; font-weight: normal; font-family: courier; color: #333; padding: 5px 0 0 0; }
+#footer img { vertical-align: middle; margin: 0 10px; }
+
+.img { float: right; background-position: 5px 5px; background-repeat: no-repeat; width: 200px; height: 150px; margin: 0 0 10px 10px; border: 1px solid #AAA; padding: 5px; text-align: center; }
+p { margin: 0 0 20px 0; }

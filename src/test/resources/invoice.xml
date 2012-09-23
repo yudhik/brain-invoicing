@@ -1,0 +1,41 @@
+<invoiceDocument createdDate="2012-07-07T15:09:50.922+07:00">
+	<buyer id="642628EC3BB94DD2978EA7AC34DC6AB2">
+		<name>ADIRA</name>
+		<streetAddressOne>JL. PATIMURA</streetAddressOne>
+		<phoneNumber>4567890</phoneNumber>
+	</buyer>
+	<seller id="0463A24D14FB4EBFBB99E367A76FDCD3">
+		<name>MERUYA ACOUSTIC</name>
+		<streetAddressOne>Jln. Meruya Pusat</streetAddressOne>
+		<phoneNumber>6663771</phoneNumber>
+	</seller>
+	<invoiceSummary>
+		<invoiceCurrencyISO>IDR</invoiceCurrencyISO>
+		<invoiceNumber>INV-070712025501653</invoiceNumber>
+		<invoiceTotal>200000</invoiceTotal>
+		<remark />
+	</invoiceSummary>
+	<tradeItem number="0">
+		<gtin>00000000000</gtin>
+		<additionalTradeInformation>
+			<tradeItemInformation>
+				<tradeItemInformationType>serial_number</tradeItemInformationType>
+				<tradeItemInformationValue>123450</tradeItemInformationValue>
+			</tradeItemInformation>
+			<tradeItemInformation>
+				<tradeItemInformationType>product_name</tradeItemInformationType>
+				<tradeItemInformationValue>TV/DVD DOUBLE DIN TOYOTA EG 08 GPS
+				</tradeItemInformationValue>
+			</tradeItemInformation>
+			<tradeItemInformation>
+				<tradeItemInformationType>price</tradeItemInformationType>
+				<tradeItemInformationValue>200000</tradeItemInformationValue>
+			</tradeItemInformation>
+			<tradeItemInformation>
+				<tradeItemInformationType>quantity</tradeItemInformationType>
+				<tradeItemInformationValue>1</tradeItemInformationValue>
+			</tradeItemInformation>
+		</additionalTradeInformation>
+		<total>200000</total>
+	</tradeItem>
+</invoiceDocument>

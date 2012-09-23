@@ -1,0 +1,122 @@
+/*
+create by Bernie Zimmermann
+*/
+.notSoWide {
+	font-family: Tahoma, Arial;
+	font-size: 0.8em;
+	padding: 5px;
+	border-right: 1px solid;
+	border-bottom: 1px solid;
+	width: 400px;
+	margin-bottom: 25px;
+}
+
+.wider {
+	font-family: Arial;
+	font-size: 0.9em;
+	padding: 10px;
+	background-color: #fff;
+	border-right: 1px solid;
+	border-bottom: 1px solid;
+	width: 600px;
+	margin-bottom: 25px;
+}
+
+.widest {
+	font-family: Arial;
+	font-size: 1em;
+	padding: 15px;
+	border-right: 1px solid;
+	border-bottom: 1px solid;
+	width: 90%;
+}
+
+.table {
+	width: 100%;
+	border: 1px solid;
+}
+
+.table .th { /* color: #fff; */
+	font-weight: bold;
+	border-bottom: 1px solid;
+}
+
+.table .tr:nth-child(odd) { /* background-color: #eee; */
+	
+}
+
+.table .td {
+	float: left;
+	width: 20%;
+	padding-left: 3%;
+}
+
+.table .td-num {
+	text-align: right;
+	float: left;
+	width: 20%;
+	padding-left: 3%;
+}
+
+.table .td-5 {
+	float: left;
+	width: 5%;
+	padding-left: 2%;
+}
+
+.table .td-5-num {
+	text-align: right;
+	float: left;
+	width: 5%;
+	padding-left: 2%;
+}
+
+.table .td-15 {
+	float: left;
+	width: 15%;
+	padding-left: 2%;
+}
+
+.table .td-15-num {
+	text-align: right;
+	float: left;
+	width: 15%;
+	padding-left: 2%;
+}
+
+.table .td-25 {
+	float: left;
+	width: 35%;
+	padding-left: 2%;
+}
+
+.table .td-25-num {
+	text-align: right;
+	float: left;
+	width: 35%;
+	padding-left: 2%;
+}
+
+.table .tr-sum {
+	float: right;
+}
+
+.table .tr-sum .td {
+	float: right;
+	width: 15%;
+	padding-right: 30%;
+}
+
+.table .footer {
+	width: 100%;
+}
+
+.inv-table {
+	width: 100%;
+	font-family: Arial;
+	font-size: 1.1em;
+}
+
+.inv-table tfoot {
+	text-align: right;
+}

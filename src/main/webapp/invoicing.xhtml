@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<h1>
+			<h:outputText value="Halaman Pembuatan Faktur" />
+		</h1>
+		<div id="invoiceContent">
+			<h:form id="invoiceForm">
+				<p:growl autoUpdate="true" />
+				<div id="invoiceHeader">
+					<div class="leftInfo">
+						<h2>
+							<h:outputText>Faktur #</h:outputText><h:inputText value="#{invoicingPage.invoiceForm.invoiceData.invoiceNumber}" style="width:200px;" />
+						</h2>
+					</div>
+					<div class="rightInfo">
+						<h2>
+							<h:outputText value="#{invoicingPage.invoiceForm.invoiceData.plainInvoiceDate}" />
+						</h2>
+					</div>
+				</div>
+				<div style="height:120px;width:100%">
+					<div id="supplier_information">
+						<p:fieldset style="border:none;">
+							<h:panelGrid columns="3" cellpadding="5">
+								<h:outputText value="Penjual" />
+								<h:outputText value=":" />
+								<h:outputText value="#{invoicingPage.sellerStore.storeName}" />
+	
+								<h:outputText value="Alamat" />
+								<h:outputText value=":" />
+								<h:outputText value="#{invoicingPage.sellerStore.address}" />
+	
+								<h:outputText value="Telp" />
+								<h:outputText value=":" />
+								<h:outputText value="#{invoicingPage.sellerStore.phoneNumber}" />
+							</h:panelGrid>
+						</p:fieldset>
+					</div>
+	
+					<div id="buyer_information">
+						<p:fieldset style="border:none;">
+							<h:panelGrid columns="3" cellpadding="5">
+								<h:outputText value="Pembeli" />
+								<h:outputText value=":" />
+								<h:outputText id="buyer_id" value="#{invoicingPage.invoiceForm.invoiceData.buyer.storeName}" size="30" />
+	
+								<h:outputText value="Alamat" />
+								<h:outputText value=":" />
+								<h:outputText id="buyer_address" size="30" value="#{invoicingPage.invoiceForm.invoiceData.buyer.address}" />
+	
+								<h:outputText value="Telp" />
+								<h:outputText value=":" />
+								<h:outputText id="buyer_phone" value="#{invoicingPage.invoiceForm.invoiceData.buyer.phoneNumber}" />
+							</h:panelGrid>
+						</p:fieldset>
+					</div>
+				</div>
+				<div class="separator">
+					<hr />
+				</div>
+				<div id="invoiceItemTable" style="width: 100%;">
+					<p:dataTable var="invoiceDetail" value="#{invoicingPage.invoiceForm.invoiceData.invoiceDetails}" rowIndexVar="index">
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="No" />
+							</f:facet>
+							<h:outputText value="#{index + 1}" />
+						</p:column>
+
+						<p:column headerText="Nama Barang">
+							<h:outputText value="#{invoiceDetail.product.productName}" />
+						</p:column>
+
+						<p:column headerText="Serial Number">
+							<h:outputText value="#{invoiceDetail.serialNumber}" />
+						</p:column>
+
+						<p:column style="text-align:right;">
+							<f:facet name="header">
+								<h:outputText value="Harga Satuan" />
+							</f:facet>
+							<h:outputText value="#{invoiceDetail.price}">
+								<f:convertNumber type="currency" currencySymbol="" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Jumlah" style="text-align:right;">
+							<h:outputText value="#{invoiceDetail.jumlah}" />
+						</p:column>
+
+						<p:column headerText="Total" style="text-align:right;">
+							<h:outputText value="#{invoiceDetail.total}">
+								<f:convertNumber type="currency" currencySymbol="" />
+							</h:outputText>
+						</p:column>
+
+						<f:facet name="footer">
+							<h:outputText value="Grand Total Rp." />
+							<h:outputText value="#{invoicingPage.invoiceForm.invoiceData.grandTotal}">
+								<f:convertNumber type="currency" currencySymbol="" />
+							</h:outputText>
+							<h:outputText value=",-" />
+						</f:facet>
+					</p:dataTable>
+				</div>
+				<p:contextMenu>
+					<p:menuitem value="Masukan Pelanggan" oncomplete="contactDialog.show()" icon="ui-icon-contact" />
+					<p:menuitem value="Tambah Detil" icon="ui-icon-plus" onclick="invoiceDetailDialog.show()" />
+					<p:menuitem value="Ubah Detil" icon="ui-icon-arrowrefresh-1-w" onclick="invoiceEditDialog.show()" />
+					<p:menuitem value="Hapus Detil" icon="ui-icon-trash" onclick="invoiceDeleteDialog.show()"/>
+					<p:menuitem value="Simpan Invoice" icon="ui-icon-print" actionListener="#{invoicingPage.saveInvoice}" update=":content" oncomplete="printConfirmation.show()" />
+					<p:menuitem value="Faktur Baru" actionListener="#{invoicingPage.newInvoice}" update=":content" icon="ui-icon-document" />
+				</p:contextMenu>
+			</h:form>
+
+			<h:form id="contactDialogForm">
+				<p:dialog header="Pelanggan" widgetVar="contactDialog" resizable="false" id="contactdlg" showEffect="fade" hideEffect="explode" modal="true">
+					<p:fieldset>
+						<h:panelGrid columns="3" cellpadding="5">
+							<h:outputText value="Nama Toko : " />
+							<p:autoComplete id="buyer_id" value="#{invoicingPage.invoiceForm.invoiceData.buyer}" minQueryLength="3" var="store" itemLabel="#{store.storeName}" itemValue="#{store}"
+								forceSelection="true" converter="pickStoreConverter" completeMethod="#{invoicingPage.completeStore}" dropdown="true">
+								<p:ajax event="itemSelect" update="pelanggan_address,pelanggan_phone" />
+							</p:autoComplete>
+							<p:commandButton onclick="storeDialog.show()" value="Pelanggan Baru" icon="ui-icon-plusthick" />
+
+							<h:outputText value="alamat" />
+							<h:outputText id="pelanggan_address" size="30" value="#{invoicingPage.invoiceForm.invoiceData.buyer.address}" />
+							<h:outputText value="" />
+
+							<h:outputText value="" />
+							<h:outputText id="pelanggan_address2" size="30" />
+							<h:outputText value="" />
+
+
+							<h:outputText value="Telp" />
+							<h:outputText id="pelanggan_phone" value="#{invoicingPage.invoiceForm.invoiceData.buyer.phoneNumber}" />
+							<h:outputText value="" />
+
+							<p:commandButton value="Tambahkan" onclick="contactDialog.hide();" update=":content" />
+						</h:panelGrid>
+					</p:fieldset>
+				</p:dialog>
+			</h:form>
+
+			<h:form id="storeDialogForm">
+				<p:dialog header="Rincian Toko" widgetVar="storeDialog" resizable="false" id="userdlg" showEffect="fade" hideEffect="explode" modal="true">
+					<p:fieldset>
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputText value="Id Pelanggan : " />
+							<h:outputText value="#{storePage.storeForm.store.uuid}" id="uuid" />
+
+							<h:outputText value="Nama Toko : " />
+							<p:inputText value="#{storePage.storeForm.store.storeName}" id="name" />
+
+							<h:outputText value="Nomor Telephone : " />
+							<p:inputText value="#{storePage.storeForm.store.phoneNumber}" id="phone" />
+
+							<h:outputText value="Alamat : " />
+							<p:inputTextarea value="#{storePage.storeForm.store.address}" id="address" autoResize="false" rows="5" />
+
+							<p:commandButton action="#{storePage.saveStore}" value="Tambahkan" onclick="storeDialog.hide();" />
+						</h:panelGrid>
+					</p:fieldset>
+				</p:dialog>
+			</h:form>
+
+			<h:form id="detailsDialogForm">
+				<p:dialog header="Rincian Faktur" widgetVar="invoiceDetailDialog" resizable="false" id="invdetaildlg" showEffect="fade" hideEffect="explode" modal="true">
+					<p:fieldset>
+						<h:panelGrid columns="3" cellpadding="5">
+							<h:outputText value="Nama Barang : " />
+							<p:selectOneMenu value="#{invoicingPage.invoiceForm.detail.product}" id="product_code" converter="pickProductConverter" efect="fade">
+								<f:selectItem itemLabel="pilih product" itemValue="" />
+								<f:selectItems value="#{invoicingPage.products}" var="product" itemLabel="#{product.productName}" itemValue="#{product}" />
+							</p:selectOneMenu>
+							<p:commandButton value="Pencarian Lanjutan" onclick="productSearchDialog.show()" />
+
+							<h:outputText value="Serial Number: " />
+							<p:inputText value="#{invoicingPage.invoiceForm.detail.serialNumber}" id="serial_number" />
+							<h:outputText value="" />
+
+							<h:outputText value="Harga : " />
+							<p:inputText value="#{invoicingPage.invoiceForm.detail.price}" id="price" />
+							<h:outputText value="" />
+
+							<p:commandButton action="#{invoicingPage.saveDetail}" value="Simpan" onclick="invoiceDetailDialog.hide();" update=":content" />
+						</h:panelGrid>
+					</p:fieldset>
+				</p:dialog>
+			</h:form>
+			<h:form id="removeDetailDialogForm">
+				<p:dialog header="Penghapusan isi Faktur" widgetVar="invoiceDeleteDialog" resizable="false" id="invdeletedlg" showEffect="fade" hideEffect="explode" modal="true">
+					<p:fieldset>
+						<h:panelGrid columns="3" cellpadding="5">
+							<h:outputText value="Barang yang ingin dihapus : " />
+							<p:selectOneMenu value="#{invoicingPage.invoiceForm.mistakeId}" id="delete_detail_transaction" efect="fade" converter="pickUuidConverter">
+								<f:selectItem itemLabel="nama barang" itemValue="" />
+								<p:ajax listener="#{invoicingPage.changeDetail}" 
+									update=":removeDetailDialogForm:delete_product_code :removeDetailDialogForm:delete_serial_number :removeDetailDialogForm:delete_price" />
+								<f:selectItems value="#{invoicingPage.detailInvoices}" var="detail" itemLabel="#{detail.product.productName}" itemValue="#{detail.uuid}" />
+							</p:selectOneMenu>
+							<h:outputText value="" />
+							
+							<h:outputText value="Nama Barang : " />
+							<h:outputText value="#{invoicingPage.invoiceForm.detail.product.productName}" id="delete_product_code"/>
+							<h:outputText value="" />
+
+							<h:outputText value="Serial Number: " />
+							<h:outputText value="#{invoicingPage.invoiceForm.detail.serialNumber}" id="delete_serial_number" />
+							<h:outputText value="" />
+
+							<h:outputText value="Harga : " />
+							<h:outputText value="#{invoicingPage.invoiceForm.detail.price}" id="delete_price" />
+							<h:outputText value="" />
+
+							<p:commandButton value="Hapus" action="#{invoicingPage.removeDetail}" onclick="invoiceDeleteDialog.hide();" update=":content" />
+						</h:panelGrid>
+					</p:fieldset>
+				</p:dialog>
+			</h:form>
+			
+			
+			<h:form id="editDetailsDialogForm">
+				<p:dialog header="Perubahan Faktur" widgetVar="invoiceEditDialog" resizable="false" id="inveditdlg" showEffect="fade" hideEffect="explode" modal="true">
+					<p:fieldset>
+						<h:panelGrid columns="3" cellpadding="5">
+							<h:outputText value="Barang yang salah : " />
+							<p:selectOneMenu value="#{invoicingPage.invoiceForm.mistakeId}" id="edit_detail_transaction" efect="fade" converter="pickUuidConverter">
+								<f:selectItem itemLabel="nama barang" itemValue="" />
+								<p:ajax listener="#{invoicingPage.changeDetail}" 
+									update=":editDetailsDialogForm:edit_product_code :editDetailsDialogForm:edit_serial_number :editDetailsDialogForm:edit_price" />
+								<f:selectItems value="#{invoicingPage.detailInvoices}" var="detail" itemLabel="#{detail.product.productName}" itemValue="#{detail.uuid}" />
+							</p:selectOneMenu>
+							<h:outputText value="" />
+							
+							<h:outputText value="Nama Barang : " />
+							<p:selectOneMenu value="#{invoicingPage.invoiceForm.detail.product}" id="edit_product_code" converter="pickProductConverter" efect="fade">
+								<f:selectItem itemLabel="pilih product" itemValue="" />
+								<f:selectItems value="#{invoicingPage.products}" var="product" itemLabel="#{product.productName}" itemValue="#{product}" />
+							</p:selectOneMenu>
+							<p:commandButton value="Pencarian Lanjutan" onclick="productSearchDialog.show()" />
+
+							<h:outputText value="Serial Number: " />
+							<p:inputText value="#{invoicingPage.invoiceForm.detail.serialNumber}" id="edit_serial_number" />
+							<h:outputText value="" />
+
+							<h:outputText value="Harga : " />
+							<p:inputText value="#{invoicingPage.invoiceForm.detail.price}" id="edit_price" />
+							<h:outputText value="" />
+
+							<p:commandButton value="Simpan" action="#{invoicingPage.saveUpdateAndGenerateNewDetail}" onclick="invoiceEditDialog.hide();" update=":content" />
+						</h:panelGrid>
+					</p:fieldset>
+				</p:dialog>
+			</h:form>
+			
+			<h:form id="productSearchForm">
+				<p:dialog header="Pencarian Product" widgetVar="productSearchDialog" resizable="true" id="productsearchdlg" showEffect="fade" hideEffect="explode" minWidth="300">
+					<p:fieldset id="productSearchField">
+						<h:panelGrid columns="3" cellpadding="5">
+							<p:selectOneMenu value="#{invoicingPage.invoiceForm.searchBy}" id="product_searchBy" efect="fade">
+								<p:ajax event="change" update=":productSearchForm:productSearchField" />
+								<f:selectItem itemLabel="Tipe Pencarian" itemValue="" />
+								<f:selectItem itemLabel="Kode Barang" itemValue="code" />
+								<f:selectItem itemLabel="Nama Barang" itemValue="name" />
+								<f:selectItem itemLabel="Kategori" itemValue="category" />
+								<f:selectItem itemLabel="Merek" itemValue="brand" />
+							</p:selectOneMenu>
+							<p:inputText id="product_searchText" value="#{invoicingPage.invoiceForm.searchTerms}" rendered="#{invoicingPage.invoiceForm.textTerms}" />
+							<p:selectOneMenu value="#{invoicingPage.invoiceForm.searchTerms}" id="product_searchBrandTerms" efect="fade" rendered="#{invoicingPage.invoiceForm.brandTerms}">
+								<f:selectItems value="#{invoicingPage.brands}" var="brand" itemLabel="#{brand.brandName}" itemValue="#{brand.uuid}" />
+							</p:selectOneMenu>
+							<p:selectOneMenu value="#{invoicingPage.invoiceForm.searchTerms}" id="product_searchCategoryTerms" efect="fade" rendered="#{invoicingPage.invoiceForm.categoryTerms}">
+								<f:selectItems value="#{invoicingPage.categories}" var="category" itemLabel="#{category.categoryName}" itemValue="#{category.uuid}" />
+							</p:selectOneMenu>
+							<p:commandButton value="Cari" update=":productSearchForm:productSearchResultList" />
+						</h:panelGrid>
+						<p:dataTable id="productSearchResultList" var="productResult" value="#{invoicingPage.productSearchResult}" selectionMode="single" rowKey="#{productResult}"
+							emptyMessage="Tidak ada product yang tersedia untuk pencarian di atas">
+							<p:ajax event="rowSelect" listener="#{invoicingPage.updateDetailProductSelection}" update=":detailsDialogForm:product_code" />
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Kode Product" />
+								</f:facet>
+								<h:outputText value="#{productResult.productCode}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Nama Product" />
+								</f:facet>
+								<h:outputText value="#{productResult.productName}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Merek" />
+								</f:facet>
+								<h:outputText value="#{productResult.brand.brandName}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Kategori" />
+								</f:facet>
+								<h:outputText value="#{productResult.category.categoryName}" />
+							</p:column>
+						</p:dataTable>
+						<h:panelGrid columns="2" cellpadding="15">
+							<p:commandButton value="Tutup Pencarian Lanjutan" onclick="productSearchDialog.hide()" />
+						</h:panelGrid>
+					</p:fieldset>
+				</p:dialog>
+			</h:form>
+			<div id="invoiceFooter">
+				<p style="font-style: italic;">* barang yang telah dibeli tidak dapat dikembalikan</p>
+			</div>
+			<h:form id="printConfirmationForm">
+				<p:dialog id="printConfirmationDialog" severity="alert" widgetVar="printConfirmation">
+					<p:fieldset legend="Apakah anda ingin mencetak faktur ini?">
+						<p:commandButton id="confirm" value="Ya" action="#{invoicingPage.getInvoiceResult}" />
+						<p:commandButton id="cancel" value="Tidak" onclick="printConfimation.hide()" actionListener="#{invoicingPage.newInvoice}" />
+					</p:fieldset>
+				</p:dialog>
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>

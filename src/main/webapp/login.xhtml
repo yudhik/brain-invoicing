@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>mobitronik-demo Application</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<h:outputStylesheet name="css/screen.css" />
+	<h:outputStylesheet name="css/table.css" />
+</h:head>
+<h:body>
+	<h:panelGroup id="page" layout="block">
+		<h:panelGroup id="header" layout="block">
+			<h1>Mobitronik Demo Application</h1>
+		</h:panelGroup>
+		<p:panel header="Masukan username dan password anda" style="margin-top:10px;margin-bottom:10px;margin-left:auto;margin-right:auto;width: 400px;">
+			<h:form prependId="false">
+				<p:messages id="messages" />
+		        <h:panelGrid columns="2">
+		            <h:outputLabel for="j_username" value="Username/Email: " />
+		            <h:inputText id="j_username" value="#{loginPage.username}" required="true" label="j_username" />
+		
+		            <h:outputLabel for="j_password" value="Password: " />
+		            <h:inputSecret id="j_password" value="#{loginPage.password}" required="true" label="j_password"/>
+		            
+		            <h:outputLabel for="_spring_security_remember_me" value="Remember me" />
+					<h:selectBooleanCheckbox id="_spring_security_remember_me" />
+		        </h:panelGrid>
+		
+		        <h:commandButton type="submit" value="Login" style="margin:0" action="#{loginPage.doLogin}"/>
+			</h:form>
+		</p:panel>
+		<!--  
+		<div>
+			<form action="j_spring_security_check" method="post">
+				<input name="j_username"/>, <input name="j_password"/> <button type="submit">login</button>
+			</form>
+		</div>
+		-->
+	</h:panelGroup>
+</h:body>
+</html>

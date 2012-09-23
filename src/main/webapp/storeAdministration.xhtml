@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<h1>
+			<h:outputText value="Halaman Administrasi Toko" />
+		</h1>
+		<h:form id="tableform">
+			<p:growl id="growl" showDetail="true" />
+			<p:dataTable var="store" value="#{storePage.storeDataModel}"
+				selection="#{storePage.selectedStore}" selectionMode="single" rowKey="#{store}" paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,30">
+				<f:facet name="header">
+					Daftar Toko
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nama Toko" />
+					</f:facet>
+					<h:outputText value="#{store.storeName}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nomor Telephone" />
+					</f:facet>
+					<h:outputText value="#{store.phoneNumber}" />
+				</p:column>
+				<f:facet name="footer">
+			 		<div style="text-align: left;">
+			 		<p:commandButton update=":storedlg" oncomplete="storeDialog.show()" icon="ui-icon-document" title="Add" value="Toko Baru"/>
+					<p:commandButton update=":storeview" oncomplete="storeView.show()" icon="ui-icon-search" title="View" value="Lihat Toko"/>
+			 		</div>
+			 	</f:facet>
+			</p:dataTable>
+		</h:form>
+		<h:form id="dialogForm">
+			<p:dialog header="Rincian Toko" widgetVar="storeDialog"
+				resizable="false" id="userdlg" showEffect="fade"
+				hideEffect="explode" modal="true">
+					<p:fieldset>
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputText value="Id Toko : " />
+							<h:outputText value="#{storePage.storeForm.store.uuid}" id="uuid"/>
+							
+							<h:outputText value="Nama Toko : " />
+							<p:inputText value="#{storePage.storeForm.store.storeName}" id="name" />
+							
+							<h:outputText value="Nomor Telephone : "/>
+							<p:inputText value="#{storePage.storeForm.store.phoneNumber}" id="phone" />
+							
+							<h:outputText value="Alamat Toko : "/>
+							<p:inputTextarea value="#{storePage.storeForm.store.address}" id="address" autoResize="false" rows="5"/>
+							
+							<p:commandButton action="#{storePage.saveStore}" value="Add" onclick="storeDialog.hide();" update=":content"/>
+						</h:panelGrid> 
+					</p:fieldset>
+			</p:dialog>
+		</h:form>
+
+		<p:dialog header="Rincian Toko" widgetVar="storeView"
+			resizable="false" id="storeview" showEffect="fade"
+			hideEffect="explode" modal="true">
+				<p:fieldset>
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputText value="Id Toko :" />
+						<h:outputText value="#{storePage.selectedStore.uuid}"
+							id="mailview" />
+						<h:outputText value="Nama Toko : " />
+						<h:outputText value="#{storePage.selectedStore.storeName}"
+							id="first_nameview" />
+						<h:outputText value="Nomor Telephone : " />
+						<h:outputText value="#{storePage.selectedStore.phoneNumber}"
+							id="last_nameview" />
+						<h:outputText value="Alamat Toko : " />
+						<h:outputText value="#{storePage.selectedStore.address}"
+							id="phone_numberview" />
+					</h:panelGrid>
+				</p:fieldset>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

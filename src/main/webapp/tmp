@@ -1,0 +1,70 @@
+======================
+income report
+======================
+<h:form>
+			<h:panelGrid columns="6" cellspacing="10">
+				<h:outputText value="Dari tanggal" />
+				<p:calendar value="#{reportingPage.selectedStartDate}" id="cal1" showButtonPanel="true"/>
+				
+				<h:outputText value="Sampai tanggal" />
+				<p:calendar value="#{reportingPage.selectedEndDate}" id="cal2" showButtonPanel="true"/> 
+				
+				<h:outputText value="Tipe Laporan" />
+				<p:selectOneMenu id="reportType" value="{reportingPage.selectedReportType}">
+					<f:selectItem itemLabel="pilih laporan" itemValue="" />
+					<f:selectItem itemLabel="pendapatan sales" itemValue="sales" />
+					<f:selectItem itemLabel="pendapatan toko" itemValue="toko" />
+				</p:selectOneMenu>
+				
+				<h:panelGroup>
+					<p:commandButton value="Tampilkan" />
+					<p:commandButton value="Cetak" />
+				</h:panelGroup>
+			</h:panelGrid>
+		</h:form>
+		<hr />
+
+
+====================
+			<p:dataTable id="invoiceList" var="invoice"
+				value="#{reportingPage.invoiceDataModel}" widgetVar="invoices"
+				selection="#{reportingPage.selectedInvoice}" selectionMode="single"
+				rowKey="#{invoice}"
+				emptyMessage="Tidak ada laporan pendapatan untuk saat ini">
+				<f:facet name="header">
+					Pilih tanggal : <p:calendar value="#{reportingPage.selectedStartDate}" id="cal1" showButtonPanel="true"/> sampai tanggal <p:calendar value="#{reportingPage.selectedEndDate}" id="cal2" showButtonPanel="true"/> <p:commandButton id="searchButton" value="Cari" actionListener="#{reportingPage.generateDataModel}" update=":content" />
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Invoice Number" />
+					</f:facet>
+					<h:outputText value="#{invoice.invoiceNumber}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Tanggal Faktur" />
+					</f:facet>
+					<h:outputText value="#{invoice.invoiceDate}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Kode Pembeli" />
+					</f:facet>
+					<h:outputText value="#{invoice.buyer.storeName}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Grand Total" />
+					</f:facet>
+					<h:outputText value="#{invoice.grandTotalPlain}" />
+				</p:column>
+				<p:column>
+					<p:commandButton value="Lihat" icon="ui-icon-folder-open" action="#{reportingPage.getPopulateInvoiceResult}">
+						<f:param name="invoiceNumber" value="invoice.invoiceNumber" />
+					</p:commandButton>
+				</p:column>
+				
+				<f:facet name="footer">
+					Total Faktur yang ada : <h:outputText value="#{reportingPage.invoiceDataModel.rowCount}" />, Total Pendapatan : <h:outputText value="#{reportingPage.myRevenue}" />
+				</f:facet>
+			</p:dataTable>

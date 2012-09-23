@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+      http://java.sun.com/xml/ns/javaee
+      http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+
+	<application>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+		<locale-config>
+		</locale-config>
+		<resource-bundle>
+			<base-name>MessageResources</base-name>
+			<var>messages</var>
+		</resource-bundle>
+	</application>
+	<lifecycle>
+		<phase-listener>com.brainmaster.mobitronik.primefaces.util.LoginErrorPhaseListener</phase-listener>
+	</lifecycle>
+	<factory>
+		<exception-handler-factory>com.brainmaster.mobitronik.action.error.BrainRetailExceptionHandlerFactory</exception-handler-factory>
+	</factory>
+
+	<navigation-rule>
+		<from-view-id>/userAdministration.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>view</from-outcome>
+			<to-view-id>/roleAdministration.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>add</from-outcome>
+			<to-view-id>/userAdministration.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/storeAdministration.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- show_purchaseDetail -->
+	<navigation-rule>
+		<from-view-id>/purchasing.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>show_purchaseDetail</from-outcome>
+			<to-view-id>/purchasePrint.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/purchaseOverview.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>show_purchaseDetail</from-outcome>
+			<to-view-id>/purchasePrint.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/incomeReport.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>show_purchaseDetail</from-outcome>
+			<to-view-id>/revenueReport.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- show_invoiceDetail -->
+	<navigation-rule>
+		<from-view-id>/invoicing.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>show_invoiceDetail</from-outcome>
+			<to-view-id>/invoicePrint.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/invoiceOverview.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>show_invoiceDetail</from-outcome>
+			<to-view-id>/invoicePrint.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/incomeReport.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>show_invoiceDetail</from-outcome>
+			<to-view-id>/revenueReport.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/incomeReport.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>show_incomeReportPlain</from-outcome>
+			<to-view-id>/incomeReportPrint.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<converter>
+		<converter-id>pickStoreConverter</converter-id>
+		<converter-class>com.brainmaster.mobitronik.action.PickStoreConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>pickProductConverter</converter-id>
+		<converter-class>com.brainmaster.mobitronik.action.PickProductConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>pickRoleConverter</converter-id>
+		<converter-class>com.brainmaster.mobitronik.action.PickRoleConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>packageConverter</converter-id>
+		<converter-class>com.brainmaster.mobitronik.action.PackageConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>brandConverter</converter-id>
+		<converter-class>com.brainmaster.mobitronik.action.BrandConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>categoryConverter</converter-id>
+		<converter-class>com.brainmaster.mobitronik.action.CategoryConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>pickUuidConverter</converter-id>
+		<converter-class>com.brainmaster.mobitronik.action.PickUuidConverter</converter-class>
+	</converter>
+</faces-config>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<h1>
+			<h:outputText value="Halaman administrasi merek" />
+		</h1>
+		<h:form id="tableform">
+			<p:growl id="growl" showDetail="true" />
+			<p:dataTable var="brand" value="#{brandPage.brandDataModel}" 
+				selectionMode="single" rowKey="#{brand}" widgetVar="brandTable">
+				<p:ajax event="rowSelect" listener="#{brandPage.updateSelection}" update=":dialogForm"/>
+				<f:facet name="header"><h:outputText value="Daftar Merek" /></f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Merek" />
+					</f:facet>
+					<h:outputText value="#{brand.brandName}" />
+				</p:column>
+			 	<f:facet name="footer">
+			 		<div style="text-align: left;">
+			 			<p:commandButton update=":tableform:branddlg" oncomplete="brandDialog.show()" icon="ui-icon-document" title="Add" value="Merek Baru" />
+			 			<p:commandButton update=":dialogForm:editbranddlg" oncomplete="editBrandDialog.show()" icon="ui-icon ui-icon-transferthick-e-w" title="Edit" value="Ubah Merek" />
+			 			<p:commandButton update=":dialogForm:removebranddlg" oncomplete="removeBrandDialog.show()" icon="ui-icon ui-icon-trash" title="Delete" value="Hapus Merek" />
+			 		</div>
+			 	</f:facet>
+			</p:dataTable>
+			<p:dialog header="Masukan Merek Baru" widgetVar="brandDialog"
+				resizable="false" id="branddlg" showEffect="fade"
+				hideEffect="explode" modal="true">
+					<p:fieldset id="new">
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputText value="Merek : " />
+							<p:inputText value="#{brandPage.brandForm.brand.brandName}" id="brandName" />
+							
+							<p:commandButton action="#{brandPage.saveBrand}" value="Tambahkan" onclick="brandDialog.hide();" update=":content" />
+						</h:panelGrid> 
+					</p:fieldset>
+			</p:dialog>
+		</h:form>
+		<h:form id="dialogForm">
+			<p:dialog header="Perubahan Merek" widgetVar="editBrandDialog" resizable="false" id="editbranddlg" showEffect="fade" hideEffect="explode" modal="true">
+					<p:fieldset id="edit">
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputText value="Merek Saat Ini: " />
+							<h:outputText value="#{brandPage.brandForm.selectedBrand.brandName}" />
+							
+							<h:outputText value="Merek Baru: " />
+							<p:inputText value="#{brandPage.brandForm.selectedBrand.brandName}" id="selectedBrandName" />
+							
+							<p:commandButton action="#{brandPage.updateBrand}" value="Ubah" onclick="editBrandDialog.hide();" update=":content"/>
+						</h:panelGrid> 
+					</p:fieldset>
+			</p:dialog>
+			<p:dialog header="Penghapusan Merek" widgetVar="removeBrandDialog" resizable="false" id="removebranddlg" showEffect="fade" hideEffect="explode" modal="true">
+					<p:fieldset id="delete">
+						<h:panelGrid columns="1" cellpadding="5">
+							<h:outputText value="Apakah anda yakin untuk menghapus merek ini?" />
+							<h:outputText value="#{brandPage.brandForm.selectedBrand.brandName}" id="removeSelectedBrandName" />
+							
+							<p:commandButton action="#{brandPage.removeBrand}" value="Hapus" onclick="removeBrandDialog.hide();" update=":content"/>
+						</h:panelGrid> 
+					</p:fieldset>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

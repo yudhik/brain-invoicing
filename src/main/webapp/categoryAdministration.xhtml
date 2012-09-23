@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/template.xhtml">
+    <ui:define name="content">
+        <h1>
+            <h:outputText value="Halaman Administrasi Kategory" />
+        </h1>
+        <h:form id="tableform">
+            <p:growl id="growl" showDetail="true" />
+            <p:dataTable var="category" value="#{categoryPage.categoryDataModel}" 
+                         selectionMode="single" rowKey="#{category}">
+		<p:ajax event="rowSelect" listener="#{categoryPage.updateSelection}" update=":editForm"/>
+                <f:facet name="header"><h:outputText value="Daftar Kategory" /></f:facet>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Nama Kategori" />
+                    </f:facet>
+                    <h:outputText value="#{category.categoryName}"></h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Bagian dari Kategori" />
+                    </f:facet>
+                    <h:outputText value="#{category.parentCategory.categoryName}" />
+                </p:column>
+                <f:facet name="footer">
+                    <div style="text-align: left;">
+                        <p:commandButton update=":categorydlg" oncomplete="categoryDialog.show()" icon="ui-icon-document" title="Add" value="Kategori Baru" />
+                        <p:commandButton update=":categoryview" oncomplete="categoryViewDialog.show()" icon="ui-icon-search" title="View" value="Lihat Kategori" />
+                        <p:commandButton update=":categoryedit" oncomplete="categoryEditDialog.show()" icon="ui-icon-refresh" title="Edit" value="Ubah Kategori" />
+                        <p:commandButton update=":categoryremove" oncomplete="categoryRemoveDialog.show()" icon="ui-icon-trash" title="Delete" value="Hapus Kategori" />
+                    </div>
+                </f:facet>
+            </p:dataTable>
+            <p:dialog header="Rincian Kategori" widgetVar="categoryDialog"
+                      resizable="false" id="categorydlg" showEffect="fade"
+                      hideEffect="explode" modal="true">
+                <p:fieldset legend="Detil Kategory">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputText value="Id : " />
+                        <h:outputText value="#{categoryPage.categoryForm.category.uuid}" id="uuid"/>
+
+                        <h:outputText value="Kategori : " />
+                        <p:inputText value="#{categoryPage.categoryForm.category.categoryName}" id="categoryName" />
+
+                        <h:outputText value="Bagian dari Kategori : " />
+                        <p:selectOneMenu value="#{categoryPage.categoryForm.selectedParentCategory}" converter="categoryConverter" converterMessage="convert failed">
+                            <f:selectItem itemLabel="pilih kategori" itemValue="" />
+                            <f:selectItems value="#{categoryPage.categories}" var="category" itemLabel="#{category.categoryName}" itemValue="#{category}"/>
+                        </p:selectOneMenu>
+
+                        <p:commandButton action="#{categoryPage.saveCategory}" value="Add" onclick="categoryDialog.hide();" update=":content"/>
+                    </h:panelGrid> 
+                </p:fieldset>
+            </p:dialog>
+        </h:form>
+        <h:form id="editForm">
+            <p:dialog header="Perubahan Kategori" widgetVar="categoryEditDialog" resizable="false" id="categoryeditdlg" showEffect="fade" hideEffect="explode" modal="true">
+                <p:fieldset legend="Rincian Kategori">
+		    <h:panelGrid columns="2" cellpadding="5">
+			<h:outputText value="Kategori : " />
+			<p:inputText value="#{categoryPage.categoryForm.selectedCategory.categoryName}" id="categoryName" />
+
+			<h:outputText value="Bagian dari Kategori : " />
+			<p:selectOneMenu value="#{categoryPage.categoryForm.selectedCategory.parentCategory}" converter="categoryConverter" converterMessage="convert failed">
+			    <f:selectItem itemLabel="pilih kategori" itemValue="" />
+			    <f:selectItems value="#{categoryPage.categories}" var="category" itemLabel="#{category.categoryName}" itemValue="#{category}"/>
+			</p:selectOneMenu>
+		    </h:panelGrid>
+                    <p:commandButton action="#{categoryPage.updateCategory}" value="Edit" onclick="categoryEditDialog.hide();" update=":content"/>
+                </p:fieldset>
+            </p:dialog>
+	    <p:dialog header="Penghapusan Kategori" widgetVar="categoryRemoveDialog" resizable="false" id="categoryremove" showEffect="fade" hideEffect="explode" modal="true">
+                <p:fieldset legend="Apakah anda yakin untuk menghapus kategori ini?">
+		    <h:panelGrid columns="2" cellpadding="5">
+			<h:outputText value="Kategori : " />
+			<h:outputText value="#{categoryPage.categoryForm.selectedCategory.categoryName}" id="categoryName_remove" />
+		    </h:panelGrid>
+                    <p:commandButton action="#{categoryPage.removeCategory}" value="Hapus" onclick="categoryRemoveDialog.hide();" update=":content"/>
+                </p:fieldset>
+            </p:dialog>
+        </h:form>
+        <p:dialog header="Detil Kategory" widgetVar="categoryViewDialog"
+                  resizable="false" id="categoryview" showEffect="fade"
+                  hideEffect="explode" modal="true">
+            <p:fieldset>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputText value="Id :" />
+                    <h:outputText value="#{categoryPage.categoryForm.selectedCategory.uuid}" id="uuid_view" />
+                    <h:outputText value="Kategori :" />
+                    <h:outputText value="#{categoryPage.categoryForm.selectedCategory.categoryName}" id="categoryName_view" />
+                    <h:outputText value="Bagian dari Kategori : " />
+                    <h:outputText value="#{categoryPage.categoryForm.selectedCategory.parentCategory.categoryName}" id="categoryParentNeNull_view" rendered="#{categoryPage.categoryForm.selectedCategory.parentCategory ne null}"/>
+                    <h:outputText value="-" id="categoryParentENull_view" rendered="#{categoryPage.categoryForm.selectedCategory.parentCategory eq null}"/>
+                </h:panelGrid>
+            </p:fieldset>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

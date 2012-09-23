@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<h1>
+			<h:outputText value="Halaman Administrasi Stok Toko" />
+		</h1>
+		<h:form id="tableform">
+			<p:growl id="growl" showDetail="true" />
+			<p:dataTable var="productStore" value="#{productStorePage.productStoreDataModel}" selection="#{productStorePage.productStoreForm.selectedProductStore}" selectionMode="single"
+				rowKey="#{productStore}" paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,30">
+				<f:facet name="header">
+					Daftar Stok
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nama Toko" />
+					</f:facet>
+					<h:outputText value="#{productStore.store.storeName}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Kode Product" />
+					</f:facet>
+					<h:outputText value="#{productStore.product.productCode}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nama Product" />
+					</f:facet>
+					<h:outputText value="#{productStore.product.productName}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Jumlah" />
+					</f:facet>
+					<h:outputText value="#{productStore.quantity}" />
+				</p:column>
+				<f:facet name="footer">
+					<div style="text-align: left;">
+						<p:commandButton update=":productstrdlg" oncomplete="productStoreDialog.show()" icon="ui-icon-document" title="Tambahkan" value="Stok Baru" />
+						<p:commandButton update=":content" oncomplete="productStoreEditDialog.show()" icon="ui-icon-search" title="Ubah Jumlah" value="Ubah Jumlah Stok" />
+					</div>
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		<h:form id="dialogForm">
+			<p:dialog widgetVar="productStoreDialog" resizable="false" id="productstrdlg" showEffect="fade" hideEffect="explode" modal="true">
+				<p:fieldset legend="Rincian Stok">
+					<h:panelGrid columns="3">
+						<h:outputText value="Nama Toko : " />
+						<p:selectOneMenu value="#{productStorePage.productStoreForm.productStore.store}" converter="pickStoreConverter" efect="fade" converterMessage="convert failed">
+							<f:selectItem itemLabel="pilih toko" itemValue="" />
+							<f:selectItems value="#{productStorePage.stores}" var="store" itemLabel="#{store.storeName}" itemValue="#{store}" />
+						</p:selectOneMenu>
+						<p:commandButton update=":storeview" oncomplete="storeViewDialog.show()" icon="ui-icon-document" title="Rincian Toko" value="Rincian" />
+
+						<h:outputText value="Kode Product : " />
+						<p:selectOneMenu value="#{productStorePage.productStoreForm.productStore.product}" converter="pickProductConverter" efect="fade" converterMessage="convert failed">
+							<f:selectItem itemLabel="pilih product" itemValue="" />
+							<f:selectItems value="#{productStorePage.products}" var="product" itemLabel="#{product.productName}" itemValue="#{product}" />
+						</p:selectOneMenu>
+						<p:commandButton update=":productview" oncomplete="productViewDialog.show()" icon="ui-icon-document" title="Rincian Product" value="Rincian" />
+						<p:commandButton action="#{productStorePage.saveProductStore}" value="Add" onclick="productStoreDialog.hide();" update=":content" />
+					</h:panelGrid>
+				</p:fieldset>
+			</p:dialog>
+		</h:form>
+		<h:form id="editForm">
+			<p:dialog header="Rician Product Untuk Toko" widgetVar="productStoreEditDialog" resizable="false" id="productstredit" showEffect="fade" hideEffect="explode" modal="true">
+				<p:fieldset>
+					<h:panelGrid columns="2" cellpadding="7">
+						<h:outputText value="Nama Toko" />
+						<h:outputText value="#{productStorePage.productStoreForm.selectedProductStore.store.storeName}" id="storeName_edit" />
+
+						<h:outputText value="Kode Product" />
+						<h:outputText value="#{productStorePage.productStoreForm.selectedProductStore.product.productCode}" id="productCode_edit" />
+
+						<h:outputText value="Nama Product" />
+						<h:outputText value="#{productStorePage.productStoreForm.selectedProductStore.product.productName}" id="product_name_edit" />
+
+						<h:outputText value="Nomor Barcode" />
+						<h:outputText value="#{productStorePage.productStoreForm.selectedProductStore.product.barcodeNumber}" id="barcodeNumber_edit" />
+
+						<h:outputText value="Kemasan" />
+						<h:outputText value="#{productStorePage.productStoreForm.selectedProductStore.product.packageCode.packageId}" id="packageCode_edit" />
+
+						<h:outputText value="Merek" />
+						<h:outputText value="#{productStorePage.productStoreForm.selectedProductStore.product.brand.brandName}" id="brandName_edit" />
+
+						<h:outputText value="Kategori" />
+						<h:outputText value="#{productStorePage.productStoreForm.selectedProductStore.product.category.categoryName}" id="category_edit" />
+
+						<h:outputText value="Jumlah Barang" />
+						<p:inputText value="#{productStorePage.productStoreForm.selectedProductStore.quantity}" id="product_store_quantity_edit" />
+
+						<p:commandButton action="#{productStorePage.updateProductStore}" value="Ubah" onclick="productStoreEditDialog.hide();" update=":content" />
+					</h:panelGrid>
+				</p:fieldset>
+			</p:dialog>
+		</h:form>
+		<p:dialog header="Rincian Toko" widgetVar="storeViewDialog" resizable="false" id="storeview" showEffect="fade" hideEffect="explode" modal="true">
+			<p:fieldset>
+				<h:panelGrid columns="2" cellpadding="5">
+					<h:outputText value="Id Toko :" />
+					<h:outputText value="#{productStorePage.productStoreForm.productStore.store.uuid}" id="mailview" />
+					<h:outputText value="Nama Toko : " />
+					<h:outputText value="#{productStorePage.productStoreForm.productStore.store.storeName}" id="first_nameview" />
+					<h:outputText value="Nomor Telephone : " />
+					<h:outputText value="#{productStorePage.productStoreForm.productStore.store.phoneNumber}" id="last_nameview" />
+					<h:outputText value="Alamat Toko : " />
+					<h:outputText value="#{productStorePage.productStoreForm.productStore.store.address}" id="phone_numberview" />
+				</h:panelGrid>
+			</p:fieldset>
+		</p:dialog>
+
+		<p:dialog header="Rician Product" widgetVar="productViewDialog" resizable="false" id="productview" showEffect="fade" hideEffect="explode" modal="true">
+			<p:fieldset>
+				<h:panelGrid columns="2" cellpadding="7">
+					<h:outputText value="Product Id : " />
+					<h:outputText value="#{productStorePage.productStoreForm.productStore.product.uuid}" id="uuid_view" />
+
+					<h:outputText value="Kode Product" />
+					<h:outputText value="#{productStorePage.productStoreForm.productStore.product.productCode}" id="productCode_view" />
+
+					<h:outputText value="Nama Product" />
+					<h:outputText value="#{productStorePage.productStoreForm.productStore.product.productName}" id="product_name_view" />
+
+					<h:outputText value="Nomor Barcode" />
+					<h:outputText value="#{productStorePage.productStoreForm.productStore.product.barcodeNumber}" id="barcodeNumber_view" />
+
+					<h:outputText value="Kemasan" />
+					<h:outputText value="#{productStorePage.productStoreForm.productStore.product.packageCode.packageId}" id="packageCode_view" />
+
+					<h:outputText value="Merek" />
+					<h:outputText value="#{productStorePage.productStoreForm.productStore.product.brand.brandName}" id="brandName_view" />
+
+					<h:outputText value="Kategori" />
+					<h:outputText value="#{productStorePage.productStoreForm.productStore.product.category.categoryName}" id="category_view" />
+
+					<h:outputText value="Jumlah Barang" />
+					<p:inputText value="#{productStorePage.productStoreForm.productStore.product.category.quantity}" id="product_store_quantity_view" />
+				</h:panelGrid>
+			</p:fieldset>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

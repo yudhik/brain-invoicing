@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<h1>
+			<h:outputText value="Halaman Daftar Pembelian" />
+		</h1>
+		<h:form>
+			<p:dataTable id="invoiceList" var="invoice" value="#{purchasingPage.invoiceDataModel}" widgetVar="invoices" selection="#{purchasingPage.purchasingForm.selectedPurchase}"
+				selectionMode="single" rowKey="#{invoice}" emptyMessage="Tidak ada faktur terbaru untuk hari ini" paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15">
+				<f:facet name="header">
+					<h:panelGrid columns="4" cellpadding="5" cellspacing="5">
+						<h:outputText value="Pilih tanggal faktur :" />
+						<p:calendar value="#{purchasingPage.purchasingForm.selectedDate}" id="cal" showButtonPanel="true" />
+						<p:commandButton id="searchButton" value="Cari" update=":content" />
+						<p:commandButton id="advanceSearch" value="Pencarian Lanjutan" onclick="advanceSearchForm.show()" />
+					</h:panelGrid>
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Invoice Number" />
+					</f:facet>
+					<h:outputText value="#{invoice.invoiceNumber}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Tanggal Faktur" />
+					</f:facet>
+					<h:outputText value="#{invoice.invoiceDate}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Kode Pembeli" />
+					</f:facet>
+					<h:outputText value="#{invoice.buyer.storeName}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<f:facet name="header">
+						<h:outputText value="Grand Total" />
+					</f:facet>
+					<h:outputText value="#{invoice.grandTotal}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</p:column>
+				<f:facet name="footer">
+					<p:commandButton id="viewButton" value="Lihat" icon="ui-icon-folder-open" action="#{purchasingPage.getPopulateInvoiceResult}" />
+				</f:facet>
+			</p:dataTable>
+			<p:dialog widgetVar="advanceSearchForm" header="Pencarian Lanjutan" resizable="false" id="branddlg" showEffect="fade" hideEffect="explode">
+				<p:fieldset>
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputText value="Tipe Entitas" />
+						<p:selectOneMenu value="#{purchasingPage.advancedSearchForm.selectedStore}">
+							<f:selectItem itemLabel="pilih tipe" itemValue="" />
+							<f:selectItem itemLabel="penjual" itemValue="seller" />
+							<f:selectItem itemLabel="pembeli" itemValue="buyer" />
+						</p:selectOneMenu>
+
+						<h:outputText value="Nama Toko" />
+						<p:autoComplete id="buyer_id" value="#{purchasingPage.advancedSearchForm.selectedSearchStore}" minQueryLength="5" var="store" itemLabel="#{store.storeName}"
+							itemValue="#{store}" forceSelection="true" converter="pickStoreConverter" completeMethod="#{purchasingPage.completeStore}" dropdown="true">
+						</p:autoComplete>
+
+						<h:outputText value="Kode Barang : " />
+						<p:autoComplete value="#{purchasingPage.advancedSearchForm.product}" id="product_code" var="product" itemLabel="#{product.productName}" itemValue="#{product}"
+							forceSelection="true" converter="pickProductConverter" completeMethod="#{purchasingPage.completeProduct}" dropdown="true" />
+
+						<h:outputText value="Nomor Invoice" />
+						<p:inputText value="#{purchasingPage.advancedSearchForm.invoiceNumber}" />
+
+						<p:commandButton value="Cari" onclick="advanceSearchForm.hide();" update=":content" />
+					</h:panelGrid>
+				</p:fieldset>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

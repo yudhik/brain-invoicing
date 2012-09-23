@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<h:outputText id="printCanvas" value="#{reportingPage.transformationResult}" escape="false" rendered="#{reportingPage.transformationResult ne null}" />
+		<p:commandButton value="Print" type="button" icon="ui-icon-print">
+        	<p:printer target="printCanvas" />
+    	</p:commandButton>
+		<p:button value="Kembali" outcome="incomeReport.jsf" icon="ui-icon-back" />
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>mobitronik-demo Application</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<h:outputStylesheet name="css/screen.css" media="print" />
+	<h:outputStylesheet name="css/table.css" />
+</h:head>
+<h:body>
+	<h:panelGroup id="page" layout="block">
+		<h:panelGroup id="header" layout="block">
+			<h1>Mobitronik Demo Application</h1>
+		</h:panelGroup>
+		<h:panelGroup id="container" layout="block">
+			<h:panelGroup id="sidebar" layout="block">
+				<h1>Navigasi Menu</h1>
+				<div id="navigation">
+					<h:form>
+						<p:accordionPanel dynamic="true" activeIndex="#{navigationBean.activeIndex}">
+							<p:ajax event="tabChange" listener="#{navigationBean.onTabChange}" />
+							<p:tab title="Administrasi" rendered="#{navigationBean.administratorRole}">
+								<ul style="padding: 0; list-style: none; line-height: 2;">
+									<li><h:outputLink value="roleAdministration.jsf" rendered="#{activeUser.superUser}">Role Management</h:outputLink></li>
+									<li><h:outputLink value="brandAdministration.jsf">Merek Management</h:outputLink></li>
+									<li><h:outputLink value="categoryAdministration.jsf">Kategori Management</h:outputLink></li>
+									<li><h:outputLink value="packagingvalueAdministration.jsf">Pack Management</h:outputLink></li>
+									<li><h:outputLink value="userAdministration.jsf">User Management</h:outputLink></li>
+									<li><h:outputLink value="storeAdministration.jsf">Store Management</h:outputLink></li>
+									<li><h:outputLink value="productAdministration.jsf">Product Management</h:outputLink></li>
+									<li><h:outputLink value="stokAdministration.jsf">Stok Management</h:outputLink></li>
+									<!--  
+									<li>
+										<h:outputLink value="stokManagement.jsf">Stok Opname</h:outputLink>
+									</li>
+									-->
+								</ul>
+							</p:tab>
+							<p:tab title="Penjualan" rendered="#{navigationBean.operatorRole}">
+								<ul style="padding: 0; list-style: none; line-height: 2;">
+									<li><h:outputLink value="invoiceOverview.jsf">Daftar Faktur</h:outputLink></li>
+									<li><h:outputLink value="invoicing.jsf">Pembuatan Faktur</h:outputLink></li>
+								</ul>
+							</p:tab>
+							<p:tab title="Pembelian" rendered="#{navigationBean.purchasingRole}">
+								<ul style="padding: 0; list-style: none; line-height: 2;">
+									<li><h:outputLink value="purchaseOverview.jsf">Daftar Pembelian</h:outputLink></li>
+									<li><h:outputLink value="purchasing.jsf">Pembelian Barang</h:outputLink></li>
+								</ul>
+							</p:tab>
+							<p:tab title="Laporan" rendered="#{navigationBean.reportRole}">
+								<li><h:outputLink value="incomeReport.jsf">Laporan Pendapatan</h:outputLink></li>
+								<li><h:outputLink value="stokingReport.jsf">Laporan Stok</h:outputLink></li>
+							</p:tab>
+							<p:tab title="Daftar Toko">
+								<p:selectOneListbox value="#{activeUser.selectedStore}" converter="pickStoreConverter" style="border:none;text-decoration:underline;">
+									<f:selectItems value="#{activeUser.managedStores}" var="store" itemLabel="#{store.storeName}" itemValue="#{store}" />
+									<p:ajax update=":content" />
+								</p:selectOneListbox>
+							</p:tab>
+							<p:tab title="Keluar">
+								<li><h:outputLink value="logout.jsf">Keluar dari applikasi</h:outputLink></li>
+							</p:tab>
+						</p:accordionPanel>
+					</h:form>
+				</div>
+			</h:panelGroup>
+			<h:panelGroup id="content" layout="block">
+				<ui:insert name="content">Main Content</ui:insert>
+			</h:panelGroup>
+		</h:panelGroup>
+	</h:panelGroup>
+
+</h:body>
+</html>

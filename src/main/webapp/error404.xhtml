@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Brain Retail Application Missing Page</title>
+	<link rel="stylesheet" type="text/css" href="resources/css/404.css" />
+	<link rel="stylesheet" type="text/css" href="resources/css/notfound.css" />
+	<!--[if IE]>
+    <link rel="stylesheet" type="text/css" href="resources/css/main.ie.css" />
+    <![endif]-->
+	<script type="text/javascript" src="resources/jquery-1.2.3.min.js" />
+	<script type="text/javascript" src="resources/common.js" />
+	<script type="text/javascript" src="resources/date.js" />
+	<script type="text/javascript" src="resources/notfound.js" />
+</head>
+<body>
+	<div id="main">
+		<div id="header">
+			<a href="index.html"><h1>Mobitronik Demo Application</h1></a>
+		</div>
+		<div id="page">
+			<div id="pagecontent">
+				<div id="msg">
+					<span id="login"></span><br />
+				<!--  
+					<span>anon@brainretail:~ </span>404<br />
+					404: command not found<br />
+					<span>anon@brainretail:~ </span>locate 404<br />
+					<span>anon@brainretail:~ </span>find 404<br />
+					find: 404: No such file or directory<br />
+					<span>anon@brainretail:~ </span>where are you???<br />
+					where: command not found<br />
+					<span>anon@brainretail:~ </span><br /><br />
+					HTTP 404. File not found.<br />
+					Sorry. The page you are looking for is not here.<br />
+				-->
+					<span id="cursor">
+						<img src="resources/cursor.gif" alt="" />&nbsp;</span>
+				</div>
+				<script type="text/javascript">
+					var msg = [
+							{
+								cmd : "404^}",
+								response : "404: command not found",
+								br : true
+							},
+							{
+								cmd : "^locate 404}^^",
+								response : "",
+								br : false
+							},
+							{
+								cmd : "^find 404}^^",
+								response : "find: 404: No such file or directory",
+								br : true
+							},
+							{
+								cmd : "^where are you???}",
+								response : "where: command not found",
+								br : true
+							},
+							{
+								cmd : "^^}}HTTP 404. File not found.^}Sorry. The page you are looking for is not here.",
+								response : null,
+								br : false
+							} ];
+
+					$j(document).ready(function() {
+						$j("#login").text("Last login "+Date.now().toString("ddd MMM d h:mm:ss")+" on ttys001");
+						terminal.init($("msg"));
+					});
+				</script>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div id="footer">
+			<div class="fl">
+				<img src="resources/linux.png" alt="Linux" /> 
+				<img src="resources/mysql.png" alt="MySQL" />
+				<img src="resources/duke.png" alt="Java" />
+				<img src="resources/PrimeFaces.png" alt="Primefaces" />
+			</div>
+			<div class="fr">
+				©2012 BrainRetailApplication<br />Yudhi Karunia Surtan 
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+</body>
+</html>

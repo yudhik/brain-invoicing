@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<h1>
+			<h:outputText value="Halaman Administrasi Satuan Barang" />
+		</h1>
+		<h:form id="tableform">
+			<p:growl id="growl" showDetail="true" />
+			<p:dataTable var="pack" value="#{packagingValuePage.packagingValueDataModel}"
+				selection="#{packagingValuePage.selectedPackagingValue}" selectionMode="single" rowKey="#{pack}">
+				<f:facet name="header">
+					Users
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Packaging Id" />
+					</f:facet>
+					<h:outputText value="#{pack.packageId}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Jumlah Satuan" />
+					</f:facet>
+					<h:outputText value="#{pack.contentQuantity}" />
+				</p:column>
+			 	<f:facet name="footer">
+			 		<div style="text-align: left;">
+			 		<p:commandButton update=":pkgdlg" oncomplete="pkgDialog.show()" icon="ui-icon-document" title="Add" value="Satuan Baru"/>
+					<p:commandButton update=":pkgview" oncomplete="pkgView.show()" icon="ui-icon-search" title="View" value="Lihat Satuan"/>
+			 		</div>
+			 	</f:facet>
+			</p:dataTable>
+		</h:form>
+		<h:form id="dialogForm">
+			<p:dialog header="Detil Pengguna" widgetVar="pkgDialog"
+				resizable="false" id="pkgdlg" showEffect="fade"
+				hideEffect="explode" modal="true">
+					<p:fieldset>
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputText value="Packaging Id : " />
+							<p:inputText value="#{packagingValuePage.packagingValueForm.packagingValue.packageId}" id="packId"/>
+							
+							<h:outputText value="Jumlah Satuan : " />
+							<p:inputText value="#{packagingValuePage.packagingValueForm.packagingValue.contentQuantity}" id="qty" />
+							
+							<p:commandButton action="#{packagingValuePage.savePackagingValue}" value="Simpan" onclick="pkgDialog.hide()" update=":content"/>
+						</h:panelGrid> 
+					</p:fieldset>
+			</p:dialog>
+		</h:form>
+
+		<p:dialog header="Rincian Satuan" widgetVar="pkgView"
+			resizable="false" id="pkgview" showEffect="fade"
+			hideEffect="explode" modal="true">
+				<p:fieldset>
+					<h:panelGrid columns="2" cellpadding="7">
+						<h:outputText value="Packaging Id :" />
+						<h:outputText value="#{packagingValuePage.selectedPackagingValue.packageId}"
+							id="packId_view" />
+						<h:outputText value="Jumlah Satuan:" />
+						<h:outputText value="#{packagingValuePage.selectedPackagingValue.contentQuantity}"
+							id="qty_view" />
+					</h:panelGrid>
+				</p:fieldset>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

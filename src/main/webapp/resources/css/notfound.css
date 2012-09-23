@@ -1,0 +1,4 @@
+.hidden { display: none; }
+div#msg { line-height: 22px; }
+p { margin: 0; line-height: 22px; }
+span { font-weight: bold; }

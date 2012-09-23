@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<h1>
+			<h:outputText value="Halaman Administrasi Jabatan" />
+		</h1>
+		<h:form id="tableform">
+			<p:growl id="growl" showDetail="true" />
+			<p:dataTable var="role" value="#{rolePage.roleDataModel}"
+				selection="#{rolePage.selectedRole}" selectionMode="single"
+				rowKey="#{role}">
+				<f:facet name="header">
+					Users
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nama Role" />
+					</f:facet>
+					<h:outputText value="#{role.role}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Keterangan" />
+					</f:facet>
+					<h:outputText value="#{role.description}" />
+				</p:column>
+				<f:facet name="footer">
+					<div style="text-align: left;">
+						<p:commandButton update=":roledlg" oncomplete="roleDialog.show()" icon="ui-icon-document" title="Add" value="Aturan Baru" />
+						<p:commandButton update=":roleview" oncomplete="roleView.show()" icon="ui-icon-search" title="View" value="Lihat Aturan" />
+					</div>
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		<h:form id="dialogForm">
+			<p:dialog header="Rincian Aturan" widgetVar="roleDialog"
+				resizable="false" id="userdlg" showEffect="fade"
+				hideEffect="explode" modal="true">
+				<p:fieldset>
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputText value="Nama Role :" />
+						<p:inputText value="#{rolePage.roleForm.role.role}" id="role" />
+						<h:outputText value="Keterangan :" />
+						<p:inputText value="#{rolePage.roleForm.role.description}" id="description" />
+					</h:panelGrid>
+					<p:commandButton action="#{rolePage.saveRole}" value="Simpan" onclick="roleDialog.hide();" update=":content" />
+				</p:fieldset>
+
+			</p:dialog>
+		</h:form>
+		<p:dialog header="Rincian Aturan" widgetVar="roleView"
+			resizable="false" id="roleview" showEffect="fade"
+			hideEffect="explode" modal="true">
+			<p:fieldset>
+				<h:panelGrid columns="2" cellpadding="5">
+					<h:outputText value="Nama Role :" />
+					<h:outputText value="#{rolePage.selectedRole.role}" id="role_view" />
+					<h:outputText value="Keterangan :" />
+					<h:outputText value="#{rolePage.selectedRole.description}" id="description_view" />
+				</h:panelGrid>
+			</p:fieldset>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

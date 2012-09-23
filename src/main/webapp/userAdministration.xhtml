@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<h1>
+			<h:outputText value="Halaman Administrasi Pengguna" />
+		</h1>
+		<h:form id="tableform">
+			<p:growl id="growl" showDetail="true" />
+			<p:dataTable var="user" value="#{userPage.userDataModel}"
+				selection="#{userPage.userForm.selectedUser}" selectionMode="single" rowKey="#{user}" paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,30">
+				<p:ajax event="rowSelect" listener="#{userPage.updateSelection}" update=":dialogForm"/>
+				<f:facet name="header">
+					Daftar Pengguna
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Username/Email" />
+					</f:facet>
+					<h:outputText value="#{user.emailAddress}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nama Depan" />
+					</f:facet>
+					<h:outputText value="#{user.firstName}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nama Belakang" />
+					</f:facet>
+					<h:outputText value="#{user.lastName}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nomor Telepon" />
+					</f:facet>
+					<h:outputText value="#{user.phoneNumber}" />
+				</p:column>
+			 	<f:facet name="footer">
+			 		<div style="text-align: left;">
+			 		<p:commandButton update=":userdlg" oncomplete="userDialog.show()" icon="ui-icon-document" title="Add" value="Pengguna Baru"/>
+					<p:commandButton update=":userview" oncomplete="userView.show()" icon="ui-icon-search" title="View" value="Lihat User"/>
+					<p:commandButton update=":useredit" oncomplete="userEdit.show()" icon="ui-icon-search" title="Edit" value="Ubah User"/>
+					<p:commandButton update=":userdelete" oncomplete="userDelete.show()" icon="ui-icon-search" title="Delete" value="Hapus User"/>
+			 		</div>
+			 	</f:facet>
+			</p:dataTable>
+			
+			<p:dialog widgetVar="userDialog"
+				resizable="false" id="userdlg" showEffect="fade"
+				hideEffect="explode" modal="true">
+				<p:scrollPanel style="width:800px;height:500px" scrollMode="native"> 
+					<p:fieldset legend="Detil Pengguna">
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputText value="alamat email : " />
+							<p:inputText value="#{userPage.userForm.user.emailAddress}" id="mail"/>
+							
+							<h:outputText value="nama depan : " />
+							<p:inputText value="#{userPage.userForm.user.firstName}" id="first_name" />
+							
+							<h:outputText value="nama belakang : "/>
+							<p:inputText value="#{userPage.userForm.user.lastName}" id="last_name" />
+							
+							<h:outputText value="nomor telepon : "/>
+							<p:inputText value="#{userPage.userForm.user.phoneNumber}" id="phone_number" />
+							
+							<h:outputText value="password :" />
+							<p:password value="#{userPage.userForm.user.password}" id="password" />
+							
+							<h:outputText value = "Digunakan pada toko : " />
+							<p:pickList id="userStores" value = "#{userPage.storesModel}" var="ustore" 
+								itemValue="#{ustore}" converter="pickStoreConverter" 
+								showSourceControls="true" showTargetControls="true">
+								<f:facet name = "sourceCaption">Daftar Toko</f:facet>
+								<f:facet name = "targetCaption">Toko yang dikelola</f:facet>
+								<p:column>#{ustore.storeName}</p:column>
+							</p:pickList>
+							
+							<h:outputText value = "Bertugas Sebagai : " />
+							<p:pickList id="userRoles" value = "#{userPage.rolesModel}" var="urole" 
+								itemValue="#{urole}" converter="pickRoleConverter" 
+								showSourceControls="true" showTargetControls="true">
+								<f:facet name = "sourceCaption">Daftar tugas</f:facet>
+								<f:facet name = "targetCaption">Tugas yang diberikan</f:facet>
+								<p:column>#{urole.description}</p:column>
+							</p:pickList>
+							
+							<p:commandButton action="#{userPage.saveUser}" value="Simpan" onclick="userDialog.hide();" update=":content"/>
+						</h:panelGrid> 
+					</p:fieldset>
+					</p:scrollPanel>
+			</p:dialog>
+		</h:form>
+		<h:form id="dialogForm">
+			<p:dialog header="Detil Pengguna" widgetVar="userEdit" id="useredit" showEffect="fade"
+				hideEffect="explode" modal="true">
+				<p:fieldset legend="Detil Pengguna">
+					<p:scrollPanel style="width:800px;height:500px" scrollMode="native">
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputText value="alamat email : " />
+							<p:inputText value="#{userPage.userForm.selectedUser.emailAddress}" id="edit_mail"/>
+							
+							<h:outputText value="nama depan : " />
+							<p:inputText value="#{userPage.userForm.selectedUser.firstName}" id="edit_first_name" />
+							
+							<h:outputText value="nama belakang : "/>
+							<p:inputText value="#{userPage.userForm.selectedUser.lastName}" id="edit_last_name" />
+							
+							<h:outputText value="nomor telepon : "/>
+							<p:inputText value="#{userPage.userForm.selectedUser.phoneNumber}" id="edit_phone_number" />
+							
+							<h:outputText value="password :" />
+							<p:password value="#{userPage.userForm.selectedUser.password}" id="edit_password" />
+							
+							<h:outputText value = "Digunakan pada toko : " />
+								<p:pickList id="userStores" value = "#{userPage.selectedUserStores}" var="ustore" 
+									itemValue="#{ustore}" converter="pickStoreConverter" 
+									showSourceControls="true" showTargetControls="true">
+									<f:facet name = "sourceCaption">Daftar Toko</f:facet>
+									<f:facet name = "targetCaption">Toko yang dikelola</f:facet>
+									<p:column>#{ustore.storeName}</p:column>
+								</p:pickList>
+								
+								<h:outputText value = "Bertugas Sebagai : " />
+								<p:pickList id="userRoles" value = "#{userPage.selectedUserRoles}" var="urole" 
+									itemValue="#{urole}" converter="pickRoleConverter" 
+									showSourceControls="true" showTargetControls="true">
+									<f:facet name = "sourceCaption">Daftar tugas</f:facet>
+									<f:facet name = "targetCaption">Tugas yang diberikan</f:facet>
+									<p:column>#{urole.description}</p:column>
+								</p:pickList>
+							
+							<p:commandButton action="#{userPage.updateSelectedUser}" value="Ubah" onclick="userEdit.hide();" update=":content"/>
+						</h:panelGrid> 
+					</p:scrollPanel>
+				</p:fieldset>
+			</p:dialog>
+			
+			<p:dialog header="Detil Pengguna" widgetVar="userDelete" id="userdelete" showEffect="fade"
+				hideEffect="explode" modal="true">
+				<p:fieldset legend="Anda yakin untuk menhapus user dengan detil seperti ini">
+					<h:panelGrid columns="2" cellpadding="7">
+						<h:outputText value="alamat email :" />
+						<h:outputText value="#{userPage.userForm.selectedUser.emailAddress}" id="delete_mailview" />
+						<h:outputText value="nama depan : " />
+						<h:outputText value="#{userPage.userForm.selectedUser.firstName}" id="delete_first_nameview" />
+						<h:outputText value="nama belakang : " />
+						<h:outputText value="#{userPage.userForm.selectedUser.lastName}" id="delete_last_nameview" />
+						<h:outputText value="nomor telepon : " />
+						<h:outputText value="#{userPage.userForm.selectedUser.phoneNumber}" id="delete_phone_numberview" />
+						
+						<p:commandButton action="#{userPage.removeSelectedUser}" value="Hapus" onclick="userDelete.hide();" update=":content"/>
+					</h:panelGrid> 
+				</p:fieldset>
+			</p:dialog>
+			
+			<p:dialog header="Detil Pengguna" widgetVar="userView" id="userview" showEffect="fade"
+				hideEffect="explode" modal="true">
+					<p:fieldset>
+						<h:panelGrid columns="2" cellpadding="7">
+							<h:outputText value="alamat email :" />
+							<h:outputText value="#{userPage.userForm.selectedUser.emailAddress}" id="mailview" />
+							<h:outputText value="nama depan : " />
+							<h:outputText value="#{userPage.userForm.selectedUser.firstName}" id="first_nameview" />
+							<h:outputText value="nama belakang : " />
+							<h:outputText value="#{userPage.userForm.selectedUser.lastName}" id="last_nameview" />
+							<h:outputText value="nomor telepon : " />
+							<h:outputText value="#{userPage.userForm.selectedUser.phoneNumber}" id="phone_numberview" />
+							<h:outputText value="password : " />
+							<h:outputText value="#{userPage.userForm.selectedUser.password}" id="passwordview" />
+						</h:panelGrid>
+					</p:fieldset>
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<h1>
+			<h:outputText value="Halaman Administrasi Barang" />
+		</h1>
+		<h:form id="tableform">
+			<p:growl id="growl" showDetail="true" />
+			<p:dataTable var="product" value="#{productPage.productDataModel}" selection="#{productPage.selectedProduct}" selectionMode="single" rowKey="#{product}" paginator="true"
+				rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+				<f:facet name="header">
+					Daftar Product
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Kode Product" />
+					</f:facet>
+					<h:outputText value="#{product.productCode}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nama Product" />
+					</f:facet>
+					<h:outputText value="#{product.productName}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nomor Barcode" />
+					</f:facet>
+					<h:outputText value="#{product.barcodeNumber}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Kemasan" />
+					</f:facet>
+					<h:outputText value="#{product.packageCode.packageId}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Merek" />
+					</f:facet>
+					<h:outputText value="#{product.brand.brandName}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Kategori" />
+					</f:facet>
+					<h:outputText value="#{product.category.categoryName}" />
+				</p:column>
+				<f:facet name="footer">
+					<div style="text-align: left;">
+						<p:commandButton update=":productdlg" oncomplete="productDialog.show()" icon="ui-icon-document" title="Add" value="Product Baru" />
+						<p:commandButton update=":productview" oncomplete="productView.show()" icon="ui-icon-search" title="View" value="Lihat Product" />
+					</div>
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		<h:form id="dialogForm">
+			<p:dialog widgetVar="productDialog" resizable="false" id="productdlg" showEffect="fade" hideEffect="explode" modal="true">
+				<p:fieldset legend="Detil Product">
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputText value="Product Id : " />
+						<h:outputText value="#{productPage.productForm.product.uuid}" id="uuid" />
+
+						<h:outputText value="Kode Product" />
+						<p:inputText value="#{productPage.productForm.product.productCode}" id="productCode" />
+
+						<h:outputText value="Nama Product" />
+						<p:inputText value="#{productPage.productForm.product.productName}" id="product_name" />
+
+						<h:outputText value="Nomor Barcode" />
+						<p:inputText value="#{productPage.productForm.product.barcodeNumber}" id="barcodeNumber" />
+
+						<h:outputText value="Merek" />
+						<p:selectOneMenu value="#{productPage.productForm.product.brand}" converter="brandConverter" efect="fade">
+							<f:selectItem itemLabel="pilih merek" itemValue="" />
+							<f:selectItems value="#{productPage.brands}" var="brand" itemLabel="#{brand.brandName}" itemValue="#{brand}" />
+						</p:selectOneMenu>
+
+						<h:outputText value="Kemasan" />
+						<p:selectOneMenu value="#{productPage.productForm.product.packageCode}" converter="packageConverter" efect="fade">
+							<f:selectItem itemLabel="pilih kemasan" itemValue="" />
+							<f:selectItems value="#{productPage.packageCodes}" var="pc" itemLabel="#{pc.packageId}" itemValue="#{pc}" />
+						</p:selectOneMenu>
+
+						<h:outputText value="Kategori" />
+						<p:selectOneMenu value="#{productPage.productForm.product.category}" converter="categoryConverter" efect="fade">
+							<f:selectItem itemLabel="pilih kategori" itemValue="" />
+							<f:selectItems value="#{productPage.categories}" var="category" itemLabel="#{category.categoryName}" itemValue="#{category}" />
+						</p:selectOneMenu>
+
+						<p:commandButton action="#{productPage.saveProduct}" value="Add" onclick="productDialog.hide();" update=":content" />
+					</h:panelGrid>
+				</p:fieldset>
+			</p:dialog>
+		</h:form>
+
+		<p:dialog header="Detil Pengguna" widgetVar="productView" resizable="false" id="productview" showEffect="fade" hideEffect="explode" modal="true">
+			<p:fieldset>
+				<h:panelGrid columns="2" cellpadding="7">
+					<h:outputText value="Product Id : " />
+					<h:outputText value="#{productPage.selectedProduct.uuid}" id="uuid_view" />
+
+					<h:outputText value="Kode Product" />
+					<h:outputText value="#{productPage.selectedProduct.productCode}" id="productCode_view" />
+
+					<h:outputText value="Nama Product" />
+					<h:outputText value="#{productPage.selectedProduct.productName}" id="product_name_view" />
+
+					<h:outputText value="Nomor Barcode" />
+					<h:outputText value="#{productPage.selectedProduct.barcodeNumber}" id="barcodeNumber_view" />
+
+					<h:outputText value="Kemasan" />
+					<h:outputText value="#{productPage.selectedProduct.packageCode.packageId}" id="packageCode_view" />
+
+					<h:outputText value="Merek" />
+					<h:outputText value="#{productPage.selectedProduct.brand.brandName}" id="brandName_view" />
+
+					<h:outputText value="Kategori" />
+					<h:outputText value="#{productPage.selectedProduct.category.categoryName}" id="category_view" />
+				</h:panelGrid>
+			</p:fieldset>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

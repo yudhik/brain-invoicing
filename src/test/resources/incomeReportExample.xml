@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<incomeReportDocument>
+	<companyInformation>
+		<companyName></companyName>
+		<companyAddress>
+			<address1></address1>
+			<address2></address2>
+			<phoneNumber></phoneNumber>
+		</companyAddress>
+	</companyInformation>
+	<period>
+		<start></start>
+		<end></end>
+	</period>
+	<summary>
+		<totalInvoice></totalInvoice>
+		<totalProfit></totalProfit>
+	</summary>
+	<reportItems>
+		<reportItem number="1">
+			<invoiceNumber></invoiceNumber>
+			<invoiceDate></invoiceDate>
+			<buyerName></buyerName>
+			<invoiceTotal></invoiceTotal>
+			<invoiceProfit></invoiceProfit>
+		</reportItem>
+		<reportItem number="2">
+			<invoiceNumber></invoiceNumber>
+			<invoiceDate></invoiceDate>
+			<buyerName></buyerName>
+			<invoiceTotal></invoiceTotal>
+			<invoiceProfit></invoiceProfit>
+		</reportItem>
+	</reportItems>
+</incomeReportDocument>

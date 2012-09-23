@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<h1>
+			<h:outputText value="Laporan Stok" />
+		</h1>
+		<h:form id="stockingListForm">
+			<p:dataTable id="stockingList" var="stock" value="#{stockReportingPage.stockReportDataModel}" widgetVar="stockReport"
+				selection="#{stockReportingPage.stockReportingForm.selectedProductStoreData}" selectionMode="single" rowKey="#{stock}" emptyMessage="Tidak ada laporan stock untuk saat ini"
+				paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+				<f:facet name="header">
+					Pilih tanggal : <p:calendar value="#{stockReportingPage.stockReportingForm.selectedStartDate}" id="cal1" showButtonPanel="true" /> sampai tanggal <p:calendar
+						value="#{stockReportingPage.stockReportingForm.selectedEndDate}" id="cal2" showButtonPanel="true" />
+					<p:commandButton id="searchButton" value="Cari" actionListener="#{stockReportingPage.getStockReportDataModel}" update=":content" />
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Kode Product" />
+					</f:facet>
+					<h:outputText value="#{stock.product.productCode}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nama Product" />
+					</f:facet>
+					<h:outputText value="#{stock.product.productName}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<f:facet name="header">
+						<h:outputText value="Perkiraan Stock Saat ini" />
+					</f:facet>
+					<h:outputText value="#{stock.currentQuantity}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<f:facet name="header">
+						<h:outputText value="Harga Rata-Rata" />
+					</f:facet>
+					<h:outputText value="#{stock.averagePrice}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

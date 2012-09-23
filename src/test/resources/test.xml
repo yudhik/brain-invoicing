@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<invoiceDocument createdDate="2012-05-11T22:33:50.652+07:00">
+	<buyer id="596A775F2CB6487EADFCB2C08C13E92A">
+		<name>CACACA</name>
+		<streetAddressOne>Jln. Taman Semanan Indah II</streetAddressOne>
+		<phoneNumber>77827361</phoneNumber>
+	</buyer>
+	<seller id="CC8458D88F374FAAB4DD4D1D5FE5D522">
+		<name>PUSAT</name>
+		<streetAddressOne>ajsjdj</streetAddressOne>
+		<phoneNumber>1288371723</phoneNumber>
+	</seller>
+	<invoiceSummary>
+		<invoiceCurrencyISO>IDR</invoiceCurrencyISO>
+		<invoiceNumber>INV-110512103316231</invoiceNumber>
+		<invoiceTotal>30000</invoiceTotal>
+		<remark />
+	</invoiceSummary>
+	<tradeItem number="0">
+		<gtin>00000000000</gtin>
+		<additionalTradeInformation>
+			<tradeItemInformation>
+				<tradeItemInformationType>serial_number</tradeItemInformationType>
+				<tradeItemInformationValue>123,456,789</tradeItemInformationValue>
+			</tradeItemInformation>
+			<tradeItemInformation>
+				<tradeItemInformationType>product_name</tradeItemInformationType>
+				<tradeItemInformationValue>DATA</tradeItemInformationValue>
+			</tradeItemInformation>
+			<tradeItemInformation>
+				<tradeItemInformationType>price</tradeItemInformationType>
+				<tradeItemInformationValue>10000</tradeItemInformationValue>
+			</tradeItemInformation>
+			<tradeItemInformation>
+				<tradeItemInformationType>quantity</tradeItemInformationType>
+				<tradeItemInformationValue>3</tradeItemInformationValue>
+			</tradeItemInformation>
+		</additionalTradeInformation>
+		<total>30000</total>
+	</tradeItem>
+</invoiceDocument>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<h1>
+			<h:outputText value="Laporan Pendapatan" />
+		</h1>
+		<h:form id="invoicesListForm">
+			<p:dataTable id="invoiceList" var="invoice" value="#{reportingPage.incomeReportDataModel}" widgetVar="incomeReport" selection="#{reportingPage.reportingForm.selectedInvoice}"
+				selectionMode="single" rowKey="#{invoice}" emptyMessage="Tidak ada laporan pendapatan untuk saat ini" paginator="true" rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,30">
+				<f:facet name="header">
+					<h:outputText value="Pilih tanggal : " />
+					<p:calendar value="#{reportingPage.reportingForm.selectedStartDate}" id="cal1" showButtonPanel="true" />
+					<h:outputText value="sampai tanggal " />
+					<p:calendar value="#{reportingPage.reportingForm.selectedEndDate}" id="cal2" showButtonPanel="true" />
+					<p:commandButton id="searchButton" value="Cari" actionListener="#{reportingPage.getIncomeReportDataModel}" update=":content" />
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Invoice Number" />
+					</f:facet>
+					<h:outputText value="#{invoice.invoiceNumber}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Tanggal Faktur" />
+					</f:facet>
+					<h:outputText value="#{invoice.invoiceDate}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Kode Pembeli" />
+					</f:facet>
+					<h:outputText value="#{invoice.buyer.storeName}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<f:facet name="header">
+						<h:outputText value="Grand Total" />
+					</f:facet>
+					<h:outputText value="#{invoice.grandTotal}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:right;">
+					<f:facet name="header">
+						<h:outputText value="Total Keuntungan" />
+					</f:facet>
+					<h:outputText value="#{invoice.invoiceProfit}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<p:commandButton value="Lihat" icon="ui-icon-folder-open" action="#{reportingPage.getPopulateInvoiceResult}">
+						<f:param name="documentType" value="INVOICE" />
+					</p:commandButton>
+				</p:column>
+
+				<f:facet name="footer">
+					<h:outputText value="Total Faktur yang ada : " />
+					<h:outputText value="#{reportingPage.incomeReportDataModel.rowCount}" />
+					<h:outputText value=", Total Pendapatan : " />
+					<h:outputText value="#{reportingPage.totalRevenue}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</f:facet>
+			</p:dataTable>
+			<p:commandButton id="printReport" value="Print" action="#{reportingPage.printIncomeReport}" />
+		</h:form>
+	</ui:define>
+</ui:composition>
